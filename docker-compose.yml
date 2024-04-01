@@ -1,22 +1,49 @@
+version: "3"
+
 networks:
   default:
   traefik:
     external: true
 
-services:
-  example:
-    image: whoami
-    restart: unless-stopped
-    # ports:
-    #   - 80:80 # Port of service
-    volumes:
-    # use generated folder for generated templates
-    - ./generated/example:/example:ro # generated template "named example"
-    # use volumes folder for data persistance
-    - ./volumes/test:/test # volume "test" for service
-    env_file:
-    - ../${ENV_FILE} # load selected environment file
+#* default login: Mail:admin@admin.com - PW:password
 
+services:
+  bookstack:
+    container_name: bookstack
+    image: linuxserver/bookstack:24.02.2
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=https://bookstack.connecta-regensburg.de/
+      - DB_HOST=bookstack-db
+      - DB_PORT=3306
+      - DB_USER=bookstack
+      - DB_PASS=${MYSQL_BOOKSTACK_PASSWORD}
+      - DB_DATABASE=bookstack
+
+    env_file:
+      - ../${ENV_FILE}
+
+    volumes:
+      - /volumes/data:/config
+    restart: unless-stopped
     networks:
     - traefik # add to traefik network
     - default # add to default (stack internal) network
+    depends_on:
+      - bookstack-db    
+
+  bookstack-db:
+    container_name: bookstack-db
+    image: linuxserver/mariadb:10.11.6
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=bookstack
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${MYSQL_BOOKSTACK_PASSWORD}
+    volumes:
+      - /volumes/db:/config
+    restart: unless-stopped
