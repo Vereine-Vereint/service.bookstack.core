@@ -28,10 +28,14 @@ services:
       - /volumes/data:/config
     restart: unless-stopped
     networks:
-    - traefik # add to traefik network
-    - default # add to default (stack internal) network
+      - traefik # add to traefik network
+      - default # add to default (stack internal) network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authentik.rule=Host(`${BOOKSTACK_DOMAIN}`)"
+      - "traefik.http.routers.authentik.entrypoints=websecure"
     depends_on:
-      - bookstack-db    
+      - bookstack-db
 
   bookstack-db:
     container_name: bookstack-db
