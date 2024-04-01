@@ -14,7 +14,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - APP_URL=https://bookstack.connecta-regensburg.de/
+      - APP_URL=https://${BOOKSTACK_DOMAIN}/
       - DB_HOST=bookstack-db
       - DB_PORT=3306
       - DB_USER=bookstack
