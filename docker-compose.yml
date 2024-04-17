@@ -19,7 +19,7 @@ services:
       - DB_PORT=3306
       - DB_USER=bookstack
       - DB_PASS=${MYSQL_BOOKSTACK_PASSWORD}
-      - DB_DATABASE=bookstack
+      - DB_DATABASE=bookstackapp
 
     env_file:
       - ../${ENV_FILE}
@@ -45,7 +45,7 @@ services:
       - PGID=1000
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=Europe/Berlin
-      - MYSQL_DATABASE=bookstack
+      - MYSQL_DATABASE=bookstackapp
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD=${MYSQL_BOOKSTACK_PASSWORD}
     volumes:
