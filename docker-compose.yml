@@ -25,7 +25,7 @@ services:
       - ../${ENV_FILE}
 
     volumes:
-      - /volumes/data:/config
+      - ./volumes/data:/config
     restart: unless-stopped
     networks:
       - traefik # add to traefik network
@@ -49,5 +49,5 @@ services:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD=${MYSQL_BOOKSTACK_PASSWORD}
     volumes:
-      - /volumes/db:/config
+      - ./volumes/db:/config
     restart: unless-stopped
