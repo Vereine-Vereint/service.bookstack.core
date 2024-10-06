@@ -1,6 +1,6 @@
 #!/bin/bash
 SERVICE_NAME="bookstack"
-SERVICE_VERSION="v1.0"
+SERVICE_VERSION="v1.1"
 
 set -e
 
@@ -11,13 +11,26 @@ cd $SERVICE_DIR
 # CORE
 source ./core/core.sh
 
+# VARIABLES
+set -o allexport
+# set variables for docker or other services here
+MYSQL_DATABASE="bookstackapp"
+MYSQL_USER="bookstack"
+set +o allexport
+
 # COMMANDS
 
 # This is an example command that prints a message from the first argument
-# commands+=([example]="<msg>:Example command that prints <msg>")
-# cmd_example() {
-#   echo "Example: $1"
-# }
+commands+=([exec-db]="<msg>: Execute a command in the database container")
+cmd_exec-db() {
+  docker compose exec -it bookstack-db bash -c "mariadb -u root -p${MYSQL_ROOT_PASSWORD}"
+}
+
+commands+=([upgrade-db]="<msg>: Execute mariadb-upgrade -u root -p<PASSWORD>")
+cmd_upgrade-db() {
+  docker compose exec -it bookstack-db bash -c "mariadb-upgrade -u root -p${MYSQL_ROOT_PASSWORD}"
+}
+
 
 # ATTACHMENTS
 

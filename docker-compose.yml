@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   default:
   traefik:
@@ -17,9 +15,9 @@ services:
       - APP_URL=https://${BOOKSTACK_DOMAIN}/
       - DB_HOST=bookstack-db
       - DB_PORT=3306
-      - DB_USER=bookstack
+      - DB_USER=${MYSQL_USER}
       - DB_PASS=${MYSQL_BOOKSTACK_PASSWORD}
-      - DB_DATABASE=bookstackapp
+      - DB_DATABASE=${MYSQL_DATABASE}
 
     env_file:
       - ../${ENV_FILE}
@@ -45,8 +43,8 @@ services:
       - PGID=1000
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=Europe/Berlin
-      - MYSQL_DATABASE=bookstackapp
-      - MYSQL_USER=bookstack
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_BOOKSTACK_PASSWORD}
     volumes:
       - ./volumes/db:/config
